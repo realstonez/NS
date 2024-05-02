@@ -30,14 +30,14 @@ class Hawk:
         
         
 # Simulate natural selection
-breeding_rate_pigeon = 0.5 # breeding rate of pigeon 
+breeding_rate_pigeon = 0.2 # breeding rate of pigeon 
 breeding_rate_hawk = 1
-hunting_rate_hawk = 1 # possibility of hawks' hunting success 
+hunting_rate_hawk = 0.5 # possibility of hawks' hunting success 
 speed_min_pigeon , speed_max_pigeon = 1,3
 agg_min_hawk, agg_max_hawk = 1,1 # aggressiveness - put energy more and enhence the hunting possibility
 gridSize = 15
 
-Generation = 30
+Generation = 25
 
 population_sizes = {'Pigeons': [] , 'Hawks': []}
 
