@@ -7,33 +7,36 @@ Created on Wed May  1 13:41:05 2024
 """
 
 # simulation.py
+# execute by plot_population.py or animation.py
 
 import random
+import numpy as np
 
 class Pigeon:
     def __init__(self, location, speed, gridSize):
-        self.location = location
+        self.location = np.array(location) 
         self.speed = speed
         self.gridSize = gridSize  # Store gridSize as an instance variable
 
     def fly(self):
         # Update location within grid constraints, using the instance's gridSize
-        self.location = [max(0, min(self.gridSize-1, self.location[i] + random.randint(-self.speed, self.speed))) for i in range(2)]
-
+        self.location += np.random.randint(-self.speed, self.speed + 1, size=2)
+        self.location = np.clip(self.location, 0, self.gridSize - 1)
+        
 class Hawk:
     def __init__(self, location, aggressiveness, gridSize):
-        self.location = location
+        self.location = np.array(location)
         self.aggressiveness = aggressiveness
         self.gridSize = gridSize  # Store gridSize as an instance variable
 
     def fly(self):
         # Update location within grid constraints, using the instance's gridSize
-        self.location = [max(0, min(self.gridSize-1, self.location[i] + random.randint(-self.aggressiveness, self.aggressiveness))) for i in range(2)]
-
+        self.location += np.random.randint(-self.aggressiveness, self.aggressiveness + 1, size=2)
+        self.location = np.clip(self.location, 0, self.gridSize - 1)
 
 def run_simulation(variables):
     # Create pigeons and hawks with the given gridSize
-    [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate, Hawk_birthRate,gridSize,num_generations, density_limit] = variables
+    [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate,Hawk_huntingBoundary, Hawk_birthRate,gridSize,num_generations, density_limit] = variables
     num_pigeons = int((gridSize**2)/2)
     num_hawks = gridSize
     pigeons = [Pigeon([random.randint(0, gridSize-1) for _ in range(2)], random.randint(1, Pigeon_maxSpeed), gridSize) for _ in range(num_pigeons)]
@@ -49,9 +52,10 @@ def run_simulation(variables):
         # Hunt
         hawk_hunt = set()
         pigeon_hunted = set()
-        for j,hawk in enumerate(hawks):
+        for j, hawk in enumerate(hawks):
             for i, pigeon in enumerate(pigeons):
-                if hawk.location == pigeon.location and random.random() < Hawk_huntingRate:
+                distance = np.linalg.norm(hawk.location - pigeon.location) # Hawk hunts the prey within it's hunting range
+                if distance <= Hawk_huntingBoundary and random.random() < Hawk_huntingRate:
                     hawk_hunt.add(j)
                     pigeon_hunted.add(i)
                     break # end hunting
