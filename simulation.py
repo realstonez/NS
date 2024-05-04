@@ -30,9 +30,10 @@ class Hawk:
         # Update location within grid constraints, using the instance's gridSize
         self.location = [max(0, min(self.gridSize-1, self.location[i] + random.randint(-self.aggressiveness, self.aggressiveness))) for i in range(2)]
 
+
 def run_simulation(variables):
     # Create pigeons and hawks with the given gridSize
-    [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate, Hawk_birthRate,gridSize,num_generations] = variables
+    [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate, Hawk_birthRate,gridSize,num_generations, density_limit] = variables
     num_pigeons = int((gridSize**2)/2)
     num_hawks = gridSize
     pigeons = [Pigeon([random.randint(0, gridSize-1) for _ in range(2)], random.randint(1, Pigeon_maxSpeed), gridSize) for _ in range(num_pigeons)]
@@ -60,18 +61,23 @@ def run_simulation(variables):
         pigeons = pigeons_survive
         
         # Breed
+        pigeon_density = [[0 for _ in range(gridSize)] for _ in range(gridSize)]
+        for pigeon in pigeons:
+               pigeon_density[pigeon.location[0]][pigeon.location[1]] += 1
+            
         hawks_breed = [Hawk(hawk.location, hawk.aggressiveness, gridSize) for hawk in hawks if random.random() < Hawk_birthRate]
-        pigeon_breed = [Pigeon(pigeon.location, pigeon.speed, gridSize) for pigeon in pigeons if random.random() < Pigeon_birthRate]
-        hawks.extend(hawks_breed)
-        pigeons.extend(pigeon_breed)
-        
+        pigeons = [pigeon for i, pigeon in enumerate(pigeons) if i not in pigeon_hunted]  # Hunted pigeons die
+
+        hawks += hawks_breed  # Use += to append newly bred hawks
+        pigeons += [Pigeon(pigeon.location, pigeon.speed, gridSize) for pigeon in pigeons if random.random() < Pigeon_birthRate and pigeon_density[pigeon.location[0]][pigeon.location[1]] < density_limit]
+     
         # Fly
         for pigeon in pigeons:
             pigeon.fly()
-            pigeon_positions.append(pigeon.location.copy())
+            pigeon_positions.append(pigeon.location)
         for hawk in hawks:
             hawk.fly()
-            hawk_positions.append(hawk.location.copy())
+            hawk_positions.append(hawk.location)
         
         # Record population sizes and position after each generation
         positions['pigeons'].append(pigeon_positions)
