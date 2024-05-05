@@ -13,17 +13,17 @@ from simulation import run_simulation
 
 def plot_population_changes():
     # Simulation parameters
-    Pigeon_maxSpeed = 3
-    Pigeon_birthRate = 1
-    Hawk_maxAggressiveness = 2
-    Hawk_huntingRate = 1
+    Pigeon_maxSpeed = 2
+    Pigeon_birthRate = 0.7
+    Hawk_maxAggressiveness = 1 # should be modified. want to set as a variable that hawk fight each other
+    Hawk_huntingRate = 0.7
     Hawk_birthRate = 1
     gridSize = 16
-    num_generations = 100
+    num_generations = 9
     density_limit = 2
     Hawk_huntingBoundary = 1
     
-    variables = [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate,Hawk_huntingBoundary, Hawk_birthRate, gridSize, num_generations, density_limit]
+    variables = [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate, Hawk_birthRate, gridSize, num_generations, density_limit]
   
     population_sizes, positions = run_simulation(variables)
     
