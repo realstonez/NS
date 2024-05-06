@@ -51,5 +51,5 @@ if __name__ == "__main__":
     
     variables = [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate, Hawk_birthRate, gridSize, num_generations, density_limit]
     
-    population_sizes, positions = run_simulation(variables)
+    population_sizes, positions, attribute_counts = run_simulation(variables)
     animate_simulation(positions, gridSize, num_generations)
