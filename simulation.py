@@ -71,17 +71,6 @@ def run_simulation(variables):
         pigeons = [pigeon for i, pigeon in enumerate(pigeons) if i not in pigeon_hunted]  # Pigeon hunted died
         hawks = [hawk for hawk in hawks if hawk.Energy > 0]  # Retain only hawks with energy above 0
         
-        # Hawk fighting - hawks meet each other fight, and consume energy proportional to its aggressiveness
-        hawk_density = [ [0 for _ in range(gridSize)] for _ in range(gridSize)]
-        for hawk in hawks:
-            hawk_density[hawk.location[0]][hawk.location[1]] += 1
-        for hawk in hawks:
-            if hawk_density[hawk.location[0]][hawk.location[1]] > 1:
-                hawk.Energy -= hawk.aggressiveness
-                if hawk.Energy < 0:
-                    hawks.remove(hawk)
-            
-        
         # Breed
         pigeon_density = [[0 for _ in range(gridSize)] for _ in range(gridSize)]
         for pigeon in pigeons:

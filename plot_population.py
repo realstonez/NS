@@ -9,32 +9,22 @@ Created on Sat May  4 12:45:13 2024
 # plot_population.py
 
 import matplotlib.pyplot as plt
+from simulation import run_simulation
 import numpy as np
 
-def plot_population_changes(scenario):
+def plot_population_changes():
     # Simulation parameters
     Pigeon_maxSpeed = 3
     Pigeon_birthRate = 0.7
-    Hawk_maxAggressiveness = 2
+    Hawk_maxAggressiveness = 2 # should be modified. want to set as a variable that hawk fight each other
     Hawk_huntingRate = 0.1
-    Hawk_birthRate = 0.1
+    Hawk_birthRate = 0.5
     gridSize = 16
-    num_generations = 100
+    num_generations = 40
     density_limit = 2
     Hawk_huntingBoundary = 1
     
-    if scenario == 'NS':        
-        variables = [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate, Hawk_birthRate, gridSize, num_generations, density_limit]
-        from simulation import run_simulation
-
-    elif scenario == 'SS':
-        variables = [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate, Hawk_birthRate, gridSize, num_generations, density_limit]
-        from SS_simulation import run_simulation
-
-    elif scenario == 'AR':
-        variables = [Pigeon_maxSpeed, Hawk_maxAggressiveness, Hawk_birthRate, gridSize,num_generations, density_limit]        
-        from AR_simulation import run_simulation
-    
+    variables = [Pigeon_maxSpeed, Pigeon_birthRate, Hawk_maxAggressiveness, Hawk_huntingRate, Hawk_birthRate, gridSize, num_generations, density_limit]
   
     population_sizes, positions, attribute_counts = run_simulation(variables)
     
@@ -70,4 +60,4 @@ def plot_population_changes(scenario):
     plt.grid(True)
     plt.show()
 if __name__ == "__main__":
-    plot_population_changes('AR')
+    plot_population_changes()
