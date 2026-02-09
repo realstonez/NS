@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from simulation import run_simulation
 import numpy as np
 
-def plot_population_changes():
+def plot_population_changes(scenario):
     # Simulation parameters
     Pigeon_maxSpeed = 3
     Pigeon_birthRate = 0.7
@@ -60,4 +60,4 @@ def plot_population_changes():
     plt.grid(True)
     plt.show()
 if __name__ == "__main__":
-    plot_population_changes()
+    plot_population_changes('NS')
